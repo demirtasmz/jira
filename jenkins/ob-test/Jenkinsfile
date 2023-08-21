@@ -10,7 +10,7 @@ pipeline {
             steps{
                 script {
                     checkoutProjectGit(
-                        PROJECT_GITURL: 'https://git.dgpaysit.com/dgpays/dgpaysit/devops/jenkins/jenkins.git',
+                        PROJECT_GITURL: 'https://github.com/demirtasmz/jira.git',
                         PROJECT_BRANCH: 'jira'
                     )
                     GIT_COMMIT_TAG_CURRENT = sh(returnStdout: true, script: "git rev-parse --short=8 HEAD").trim()
