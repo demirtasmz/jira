@@ -1,0 +1,61 @@
+@Library ('obTemplate@jira') _
+pipeline {
+    agent any
+    environment {
+        JIRA_URL = "https://auradevops.atlassian.net"
+        JIRA_CREDENTIALS = credentials('jira-token')
+    }
+    stages {
+        stage('Checkout repo'){
+            steps{
+                script {
+                    checkoutProjectGit(
+                        PROJECT_GITURL: 'https://git.dgpaysit.com/dgpays/dgpaysit/devops/jenkins/jenkins.git',
+                        PROJECT_BRANCH: 'jira'
+                    )
+                    GIT_COMMIT_TAG_CURRENT = sh(returnStdout: true, script: "git rev-parse --short=8 HEAD").trim()
+                }
+            }
+        }
+        stage('echo'){
+            steps{
+                script {
+                    echo "1.0.${GIT_COMMIT_TAG_CURRENT}"
+                    echo "jiradan tetiklendi"
+                    echo "jiradan gelen image tag = ${CommitId}"
+                }
+            }
+        }
+        stage('Check Build Number') {
+            steps {
+                script {
+                    def buildNumber = currentBuild.number.toInteger()
+                    if (buildNumber % 2 == 0) {
+                        currentBuild.result = 'FAILURE'
+                        error "Build number is even, failing the build intentionally."
+                    } else {
+                        echo "Build number is odd, continuing the build."
+                    }
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            script {
+                // 4 > cancelled , 3 > Ready for Test Deploy , 2 > Ready for Newman , 11 > To Do ,  21 > In Progress
+                jiraTransitionIssue(transitionId:"4")
+            }
+        }
+        success {
+            script {
+                // 4 > cancelled , 3 > Ready for Test Deploy , 2 > Ready for Newman , 11 > To Do ,  21 > In Progress
+                jiraTransitionIssue(transitionId:"3")
+                triggerBuildJobWithParams(
+                    BUILD_JOB: 'ob-test/core-service'
+                )
+            }
+        }
+    }   
+    
+}

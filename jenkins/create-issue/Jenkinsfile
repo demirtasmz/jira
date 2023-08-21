@@ -1,0 +1,31 @@
+@Library ('obTemplate@jira') _
+pipeline {
+    agent any
+    environment {
+        JIRA_URL = "https://auradevops.atlassian.net/"
+        JIRA_CREDENTIALS = credentials('jira-token')
+    }
+    stages {
+        stage('Checkout repo'){
+            steps{
+                script {
+                    checkoutProjectGit(
+                        PROJECT_GITURL: 'https://git.dgpaysit.com/dgpays/dgpaysit/devops/jenkins/jenkins.git',
+                        PROJECT_BRANCH: 'jira'
+                    )
+                    GIT_COMMIT_TAG_CURRENT = sh(returnStdout: true, script: "git rev-parse --short=8 HEAD").trim()
+                }
+            }
+        }
+        stage('Check Commit Message') {
+            steps {
+                script {
+                    def commitMessage = sh(script: 'git log --pretty=format:%s -1', returnStdout: true).trim()
+                    if (commitMessage.contains('MigrationReadyForTesting')) {
+                        jiraCreateIssue(key:"DS",parent:"DS-1",summary:"[AUTO-GENERATED][NEWMAN] ${JOB_BASE_NAME} ",label1:"Analysis",label2:"CT1",label3:"Tester_OB",               description:"Jenkins Test.",serviceName:"core-service",imageTag:"1.0.${GIT_COMMIT_TAG_CURRENT}",issueTypeName:"Task")
+                    }
+                }
+            }
+        }        
+    } 
+}

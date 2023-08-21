@@ -1,0 +1,24 @@
+{
+    \"fields\": {
+       \"project\":
+       {
+          \"key\": \"$key\"
+       },
+       \"parent\":
+       {
+          \"key\": \"$parent\"
+       },
+       \"summary\": \"$summary\",
+       \"labels\": [
+           \"$label1\",
+           \"$label2\",
+           \"$label3\"
+       ],   
+       \"description\": \"$description\",
+       \"customfield_10070\": \"$serviceName\",
+       \"customfield_10071\": \"$imageTag\",
+       \"issuetype\": {
+          \"name\": \"$issueTypeName\"
+       }
+   }
+}
