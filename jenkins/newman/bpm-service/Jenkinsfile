@@ -23,6 +23,7 @@ pipeline {
                     echo "1.0.${GIT_COMMIT_TAG_CURRENT}"
                     echo "jiradan tetiklendi"
                     //echo "jiradan gelen image tag = ${CommitId}"
+                    echo "$commitid"
                 }
             }
         }
@@ -45,7 +46,7 @@ pipeline {
             script {
                 // 4 > cancelled , 3 > Ready for Test Deploy , 2 > Ready for Newman , 11 > To Do ,  21 > In Progress
                 //jiraTransitionIssue(transitionId:"4")
-                echo $commitid
+                echo "${commitid}"
             }
         }
         success {
@@ -55,7 +56,7 @@ pipeline {
                 // triggerBuildJobWithParams(
                 //     BUILD_JOB: 'ob-test/core-service'
                 // )
-                echo $commitid
+                echo "${commitid}"
             }
         }
     }   
