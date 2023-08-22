@@ -44,16 +44,18 @@ pipeline {
         failure {
             script {
                 // 4 > cancelled , 3 > Ready for Test Deploy , 2 > Ready for Newman , 11 > To Do ,  21 > In Progress
-                jiraTransitionIssue(transitionId:"4")
+                //jiraTransitionIssue(transitionId:"4")
+                echo $commitid
             }
         }
         success {
             script {
                 // 4 > cancelled , 3 > Ready for Test Deploy , 2 > Ready for Newman , 11 > To Do ,  21 > In Progress
-                jiraTransitionIssue(transitionId:"3")
-                triggerBuildJobWithParams(
-                    BUILD_JOB: 'ob-test/core-service'
-                )
+                // jiraTransitionIssue(transitionId:"3")
+                // triggerBuildJobWithParams(
+                //     BUILD_JOB: 'ob-test/core-service'
+                //)
+                echo $commitid
             }
         }
     }   
