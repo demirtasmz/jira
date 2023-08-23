@@ -24,6 +24,7 @@ pipeline {
                     echo "jiradan tetiklendi"
                     echo "jiradan gelen image tag = $commitid"
                     //echo "$commitid"
+
                 }
             }
         }
@@ -52,6 +53,7 @@ pipeline {
         success {
             script {
                 // 4 > cancelled , 3 > Ready for Test Deploy , 2 > Ready for Newman , 11 > To Do ,  21 > In Progress
+
                 jiraTransitionIssue(transitionId:"3")
                 triggerBuildJobWithParams(
                     BUILD_JOB: 'ob-test/core-service'
