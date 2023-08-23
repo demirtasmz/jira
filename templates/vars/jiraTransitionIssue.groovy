@@ -4,7 +4,7 @@ def call(Map config=[:]) {
     transitionId: "${config.transitionId}"    
   ]
   // get issue key with custom field commitid
-  sh('(curl -g -u $JIRA_CREDENTIALS $JIRA_URL/rest/api/2/search?jql=cf[10071]~$CommitId -o output.json)')
+  sh('(curl -g -u $JIRA_CREDENTIALS $JIRA_URL/rest/api/2/search?jql=cf[10071]~$commitid -o output.json)')
   response= sh(script: 'echo $(cat output.json)', returnStdout: true).trim()
   def jsonObj = readJSON text: "$response"
   def render = renderTemplate(rawBody,binding) 
