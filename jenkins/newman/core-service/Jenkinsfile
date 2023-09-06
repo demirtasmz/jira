@@ -22,7 +22,11 @@ pipeline {
                 script {
                     echo "1.0.${GIT_COMMIT_TAG_CURRENT}"
                     echo "jiradan tetiklendi"
+<<<<<<< HEAD
                     //echo "jiradan gelen image tag = ${CommitId}"
+=======
+                    echo "jiradan gelen image tag = $commitid"
+>>>>>>> 95d1e2a5e1f693234dcbc997b6d14b726741e6e3
                 }
             }
         }
@@ -44,18 +48,31 @@ pipeline {
         failure {
             script {
                 // 4 > cancelled , 3 > Ready for Test Deploy , 2 > Ready for Newman , 11 > To Do ,  21 > In Progress
+<<<<<<< HEAD
                 //jiraTransitionIssue(transitionId:"4")
                 echo "${commitid}"
+=======
+                jiraTransitionIssue(transitionId:"4")
+                //echo $commitid
+>>>>>>> 95d1e2a5e1f693234dcbc997b6d14b726741e6e3
             }
         }
         success {
             script {
                 // 4 > cancelled , 3 > Ready for Test Deploy , 2 > Ready for Newman , 11 > To Do ,  21 > In Progress
+<<<<<<< HEAD
                 // jiraTransitionIssue(transitionId:"3")
                 // triggerBuildJobWithParams(
                 //     BUILD_JOB: 'ob-test/core-service'
                 //)
                 echo "${commitid}"
+=======
+                jiraTransitionIssue(transitionId:"3")
+                triggerBuildJobWithParams(
+                    BUILD_JOB: 'ob-test/core-service'
+                )
+                //echo $commitid
+>>>>>>> 95d1e2a5e1f693234dcbc997b6d14b726741e6e3
             }
         }
     }   
